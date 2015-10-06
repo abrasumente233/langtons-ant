@@ -42,3 +42,9 @@ gulp.task('bower', function() {
 gulp.task('default', ['clean'], function() {
     gulp.start('styles', 'scripts');
 });
+
+gulp.watch('watch', function() {
+    livereload.listen();
+
+    gulp.watch('src/**', ['default']);
+});
