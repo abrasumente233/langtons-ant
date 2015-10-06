@@ -10,7 +10,8 @@ var gulp = require('gulp'),
     livereload = require('gulp-livereload'),
     del = require('del'),
     bower = require('gulp-bower'),
-    react = require('gulp-react');
+    react = require('gulp-react'),
+    babel = require('gulp-babel');
 
 gulp.task('clean', function(cb) {
     del(['build/assets/css', 'build/assets/js', 'build/*.html'], cb);
@@ -28,6 +29,7 @@ gulp.task('styles', function() {
 gulp.task('scripts', function() {
     return gulp.src('src/js/**/*.jsx')
         .pipe(react())
+        .pipe(babel())
         .pipe(gulp.dest('build/assets/js'))
         .pipe(rename({suffix: '.min'}))
         .pipe(uglify())
