@@ -34,14 +34,18 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest('build/assets/js'));
 });
 
+gulp.task('html', function() {
+    return gulp.src('src/index.html')
+        .pipe(gulp.dest('build'))
+        .pipe(livereload());
+});
+
 gulp.task('bower', function() {
    return bower()
         .pipe(gulp.dest('build/assets/lib'));
 });
 
-gulp.task('default', ['clean'], function() {
-    gulp.start('styles', 'scripts');
-});
+gulp.task('default', ['scripts', 'styles', 'html']);
 
 gulp.task('watch', function() {
     livereload.listen();
