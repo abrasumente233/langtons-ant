@@ -1,0 +1,30 @@
+{
+  "name": "langtons-cat",
+  "version": "1.0.0",
+  "homepage": "https://github.com/abrasumente233/langtons-cat",
+  "authors": [
+    "abrasumente <abrasumentee@gmail.com>"
+  ],
+  "description": "An implementation of Langton's Ant",
+  "main": "",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "langtons-cat",
+    "langton",
+    "cat"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.13.3"
+  }
+}
