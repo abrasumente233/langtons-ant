@@ -16,4 +16,6 @@
 
 .white { background-color: #eeeeff; }
 .black { background-color: #333533; }
-.ant { background-color: #f5cb5c; }
+.ant {
+    background-color: #f5cb5c !important;
+}

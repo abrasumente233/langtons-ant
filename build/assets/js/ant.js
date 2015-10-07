@@ -29,7 +29,11 @@
                     x = direction % 2 !== 0 ? direction === 1 ? this.state.antX + 1 : this.state.antX - 1 : this.state.antX,
                     y = direction % 2 === 0 ? direction === 0 ? this.state.antY + 1 : this.state.antY - 1 : this.state.antY;
 
-                console.log(direction, x, y);
+                this.setState({
+                    antX: x,
+                    antY: y,
+                    antDirection: direction
+                });
 
                 setTimeout(move, delay);
             }).bind(this);
@@ -37,28 +41,33 @@
         },
         render: function render() {
             var rows = [];
-            for (var i = 0; i < height; i++) {
+            for (var y = 0; y < height; y++) {
                 var cells = [];
-                for (var j = 0; j < width; j++) {
-                    cells[j] = React.createElement(Cell, { x: j, y: i });
+                for (var x = 0; x < width; x++) {
+                    cells[x] = React.createElement(Cell, { ant: x === this.state.antX && y === this.state.antY });
                 }
-                rows[i] = React.createElement("div", { className: "row" }, cells);
+                rows[y] = React.createElement("div", { className: "row" }, cells);
             }
-
-            this._rows = rows;
 
             return React.createElement("div", null, rows);
         }
     });
 
     var Cell = React.createClass({ displayName: "Cell",
+        propTypes: {
+            ant: React.PropTypes.bool.isRequired
+        },
         getInitialState: function getInitialState() {
-            status = this.props.x == center.x && this.props.y == center.y ? 'ant' : 'white';
-            return { status: status };
+            var ant = this.props.x == center.x && this.props.y == center.y,
+                status = 'white';
+            return { status: status, ant: ant };
         },
         render: function render() {
             var cx = React.addons.classSet;
-            var classes = cx('cell', this.state.status);
+            var classes = cx('cell', this.state.status, this.props.ant ? 'ant' : '');
+            if (this.props.ant) {
+                console.log('ok');
+            }
             return React.createElement("div", { className: classes });
         }
     });

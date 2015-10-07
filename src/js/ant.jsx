@@ -30,7 +30,11 @@
                     y = direction % 2 === 0 ? (direction === 0 ? this.state.antY + 1 : this.state.antY - 1)
                         : this.state.antY;
 
-                console.log(direction, x, y);
+                this.setState({
+                    antX: x,
+                    antY: y,
+                    antDirection: direction
+                });
 
                 setTimeout(move, delay);
             }.bind(this);
@@ -38,29 +42,33 @@
         },
         render: function() {
             let rows = [];
-            for (let i = 0; i < height; i++) {
+            for (let y = 0; y < height; y++) {
                let cells = [];
-               for (let j = 0; j < width; j++) {
-                   cells[j] = <Cell x={j} y={i} />;
+               for (let x = 0; x < width; x++) {
+                   cells[x] = <Cell ant={x === this.state.antX && y === this.state.antY} />;
                }
-               rows[i] = <div className="row">{cells}</div>;
+               rows[y] = <div className="row">{cells}</div>;
             }
-
-            this._rows = rows;
 
             return <div>{rows}</div>;
        }
     });
 
     let Cell = React.createClass({
+        propTypes: {
+          ant:  React.PropTypes.bool.isRequired
+        },
         getInitialState: function() {
-            status = this.props.x == center.x &&
-                this.props.y == center.y ? 'ant' : 'white';
-            return {status: status};
+            let ant = this.props.x == center.x && this.props.y == center.y,
+                status = 'white';
+            return {status: status, ant: ant};
         },
         render: function () {
             let cx = React.addons.classSet;
-            let classes = cx('cell', this.state.status);
+            let classes = cx('cell', this.state.status, this.props.ant ? 'ant' : '');
+            if (this.props.ant) {
+                console.log('ok');
+            }
             return <div className={classes}></div>;
         }
     });
