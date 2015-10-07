@@ -10,6 +10,8 @@
 
     var delay = 500;
 
+    var moved = new signals.Signal();
+
     var SquareLattice = React.createClass({ displayName: "SquareLattice",
         getInitialState: function getInitialState() {
 
@@ -30,7 +32,6 @@
             };
         },
         componentDidMount: function componentDidMount() {
-            this.moved = this.props.signal;
             var move = (function () {
 
                 var ant = document.getElementsByClassName('ant')[0],
@@ -52,7 +53,7 @@
                     antDirection: direction
                 });
 
-                this.moved.dispatch(direction, x, y, x < 0 || y < 0);
+                moved.dispatch(direction, x, y, x < 0 || y < 0);
 
                 setTimeout(move, delay);
             }).bind(this);
@@ -94,8 +95,7 @@
 
     var Langton = React.createClass({ displayName: "Langton",
         render: function render() {
-            var movedSignal = new signals.Signal();
-            return React.createElement("div", null, React.createElement(SquareLattice, { signal: movedSignal }), React.createElement(Scoreboard, { signal: movedSignal }));
+            return React.createElement("div", null, React.createElement(SquareLattice, null), React.createElement(Scoreboard, null));
         }
     });
 
@@ -120,7 +120,7 @@
             });
         },
         componentDidMount: function componentDidMount() {
-            this.props.signal.add(this.onMove);
+            moved.add(this.onMove);
         },
         handleChange: function handleChange(event) {
             delay = +event.target.value;
