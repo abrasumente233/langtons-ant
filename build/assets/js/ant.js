@@ -93,7 +93,7 @@
 
     var Langton = React.createClass({ displayName: "Langton",
         render: function render() {
-            var movedSignal = signals.Signal();
+            var movedSignal = new signals.Signal();
             return React.createElement("div", null, React.createElement(SquareLattice, { signal: movedSignal }), React.createElement(Scoreboard, { signal: movedSignal }));
         }
     });
@@ -119,7 +119,7 @@
             this.props.signal.add(this.onMove);
         },
         render: function render() {
-            return React.createElement("div", { id: "scoreboard" }, React.createElement("p", null, "Movement: ", movement, " time(s)"));
+            return React.createElement("div", { id: "scoreboard" }, React.createElement("p", null, "Movement: ", this.state.movement, " time(s)"));
         }
     });
 

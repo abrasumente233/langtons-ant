@@ -96,7 +96,7 @@
 
     let Langton = React.createClass({
         render: function() {
-            let movedSignal = signals.Signal();
+            let movedSignal = new signals.Signal();
             return <div><SquareLattice signal={movedSignal} /><Scoreboard signal={movedSignal} /></div>;
         }
     });
@@ -124,7 +124,7 @@
         render: function() {
            return (
                <div id="scoreboard">
-                   <p>Movement: {movement} time(s)</p>
+                   <p>Movement: {this.state.movement} time(s)</p>
                </div>
            );
         }
