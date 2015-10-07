@@ -6,8 +6,9 @@
     var height = 50,
         width = 70,
         center = { 'x': Math.floor(width / 2), 'y': Math.floor(height / 2) },
-        delay = 500,
         directions = ['top', 'right', 'bottom', 'left'];
+
+    var delay = 500;
 
     var SquareLattice = React.createClass({ displayName: "SquareLattice",
         getInitialState: function getInitialState() {
@@ -101,6 +102,7 @@
     var Scoreboard = React.createClass({ displayName: "Scoreboard",
         getInitialState: function getInitialState() {
             return {
+                delay: delay,
                 movement: 0,
                 direction: -1,
                 x: -1,
@@ -118,8 +120,12 @@
         componentDidMount: function componentDidMount() {
             this.props.signal.add(this.onMove);
         },
+        handleChange: function handleChange(event) {
+            delay = +event.target.value;
+            this.setState({ delay: +event.target.value });
+        },
         render: function render() {
-            return React.createElement("div", { id: "scoreboard" }, React.createElement("p", null, "Movement: ", this.state.movement, " time(s)"));
+            return React.createElement("div", { id: "scoreboard" }, React.createElement("h1", null, "Stats"), React.createElement("p", null, "Movement: ", this.state.movement, " time(s)"), React.createElement("p", null, "Direction: ", directions[this.state.direction]), React.createElement("p", null, "Position: ", this.state.x + ', ' + this.state.y), React.createElement("label", { htmlFor: "delay" }, "Delay "), React.createElement("input", { type: "number", name: "delay", onChange: this.handleChange, value: this.state.delay }));
         }
     });
 

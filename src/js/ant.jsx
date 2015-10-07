@@ -4,8 +4,9 @@
     const height     = 50,
           width      = 70,
           center     = {'x': Math.floor(width/2), 'y': Math.floor(height/2)},
-          delay      = 500,
           directions = ['top', 'right', 'bottom', 'left'];
+
+    let delay = 500;
 
     let SquareLattice = React.createClass({
         getInitialState: function() {
@@ -104,6 +105,7 @@
     let Scoreboard = React.createClass({
         getInitialState: function() {
           return {
+              delay: delay,
               movement: 0,
               direction: -1,
               x: -1,
@@ -121,10 +123,19 @@
         componentDidMount: function() {
             this.props.signal.add(this.onMove);
         },
+        handleChange: function(event) {
+            delay = +event.target.value;
+            this.setState({delay: +event.target.value});
+        },
         render: function() {
            return (
                <div id="scoreboard">
+                   <h1>Stats</h1>
                    <p>Movement: {this.state.movement} time(s)</p>
+                   <p>Direction: {directions[this.state.direction]}</p>
+                   <p>Position: {this.state.x + ', ' + this.state.y}</p>
+                   <label htmlFor="delay">Delay </label>
+                   <input type="number" name="delay" onChange={this.handleChange} value={this.state.delay}/>
                </div>
            );
         }
