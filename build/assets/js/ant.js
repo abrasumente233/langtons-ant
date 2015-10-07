@@ -29,6 +29,7 @@
             };
         },
         componentDidMount: function componentDidMount() {
+            this.moved = this.props.signal;
             var move = (function () {
 
                 var ant = document.getElementsByClassName('ant')[0],
@@ -49,6 +50,8 @@
                     antY: y,
                     antDirection: direction
                 });
+
+                this.moved.dispatch(direction, x, y);
 
                 setTimeout(move, delay);
             }).bind(this);
@@ -88,5 +91,37 @@
         }
     });
 
-    React.render(React.createElement(SquareLattice, null), document.getElementById('content'));
+    var Langton = React.createClass({ displayName: "Langton",
+        render: function render() {
+            var movedSignal = signals.Signal();
+            return React.createElement("div", null, React.createElement(SquareLattice, { signal: movedSignal }), React.createElement(Scoreboard, { signal: movedSignal }));
+        }
+    });
+
+    var Scoreboard = React.createClass({ displayName: "Scoreboard",
+        getInitialState: function getInitialState() {
+            return {
+                movement: 0,
+                direction: -1,
+                x: -1,
+                y: -1
+            };
+        },
+        onMove: function onMove(direction, x, y) {
+            this.setState({
+                movement: this.state.movement + 1,
+                direction: direction,
+                x: x,
+                y: y
+            });
+        },
+        componentDidMount: function componentDidMount() {
+            this.props.signal.add(this.onMove);
+        },
+        render: function render() {
+            return React.createElement("div", { id: "scoreboard" }, React.createElement("p", null, "Movement: ", movement, " time(s)"));
+        }
+    });
+
+    React.render(React.createElement(Langton, null), document.getElementById('content'));
 })();

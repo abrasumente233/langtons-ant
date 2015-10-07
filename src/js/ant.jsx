@@ -27,6 +27,7 @@
             };
         },
         componentDidMount: function() {
+            this.moved = this.props.signal;
             let move = function() {
 
                 let ant = document.getElementsByClassName('ant')[0],
@@ -52,6 +53,8 @@
                     antY: y,
                     antDirection: direction
                 });
+
+                this.moved.dispatch(direction, x, y);
 
                 setTimeout(move, delay);
             }.bind(this);
@@ -91,5 +94,41 @@
         }
     });
 
-    React.render(<SquareLattice />, document.getElementById('content'));
+    let Langton = React.createClass({
+        render: function() {
+            let movedSignal = signals.Signal();
+            return <div><SquareLattice signal={movedSignal} /><Scoreboard signal={movedSignal} /></div>;
+        }
+    });
+
+    let Scoreboard = React.createClass({
+        getInitialState: function() {
+          return {
+              movement: 0,
+              direction: -1,
+              x: -1,
+              y: -1
+          };
+        },
+        onMove: function(direction, x, y) {
+            this.setState({
+                movement: this.state.movement + 1,
+                direction: direction,
+                x: x,
+                y: y
+            });
+        },
+        componentDidMount: function() {
+            this.props.signal.add(this.onMove);
+        },
+        render: function() {
+           return (
+               <div id="scoreboard">
+                   <p>Movement: {movement} time(s)</p>
+               </div>
+           );
+        }
+    });
+
+    React.render(<Langton />, document.getElementById('content'));
 })();
