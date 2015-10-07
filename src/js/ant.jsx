@@ -55,7 +55,7 @@
                     antDirection: direction
                 });
 
-                this.moved.dispatch(direction, x, y);
+                this.moved.dispatch(direction, x, y, x < 0 || y < 0);
 
                 setTimeout(move, delay);
             }.bind(this);
@@ -109,15 +109,17 @@
               movement: 0,
               direction: -1,
               x: -1,
-              y: -1
+              y: -1,
+              out: false
           };
         },
-        onMove: function(direction, x, y) {
+        onMove: function(direction, x, y, out) {
             this.setState({
                 movement: this.state.movement + 1,
                 direction: direction,
                 x: x,
-                y: y
+                y: y,
+                out: out
             });
         },
         componentDidMount: function() {
@@ -128,16 +130,17 @@
             this.setState({delay: +event.target.value});
         },
         render: function() {
-           return (
+            return (
                <div id="scoreboard">
                    <h1>Stats</h1>
                    <p>Movement: {this.state.movement} time(s)</p>
                    <p>Direction: {directions[this.state.direction]}</p>
                    <p>Position: {this.state.x + ', ' + this.state.y}</p>
+                   <p>Out of border: {this.state.out + ''}</p>
                    <label htmlFor="delay">Delay </label>
-                   <input type="number" name="delay" onChange={this.handleChange} value={this.state.delay}/>
+                   <input type="number" step="50" min="1" name="delay" onChange={this.handleChange} value={this.state.delay}/>
                </div>
-           );
+            );
         }
     });
 

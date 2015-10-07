@@ -52,7 +52,7 @@
                     antDirection: direction
                 });
 
-                this.moved.dispatch(direction, x, y);
+                this.moved.dispatch(direction, x, y, x < 0 || y < 0);
 
                 setTimeout(move, delay);
             }).bind(this);
@@ -106,15 +106,17 @@
                 movement: 0,
                 direction: -1,
                 x: -1,
-                y: -1
+                y: -1,
+                out: false
             };
         },
-        onMove: function onMove(direction, x, y) {
+        onMove: function onMove(direction, x, y, out) {
             this.setState({
                 movement: this.state.movement + 1,
                 direction: direction,
                 x: x,
-                y: y
+                y: y,
+                out: out
             });
         },
         componentDidMount: function componentDidMount() {
@@ -125,7 +127,7 @@
             this.setState({ delay: +event.target.value });
         },
         render: function render() {
-            return React.createElement("div", { id: "scoreboard" }, React.createElement("h1", null, "Stats"), React.createElement("p", null, "Movement: ", this.state.movement, " time(s)"), React.createElement("p", null, "Direction: ", directions[this.state.direction]), React.createElement("p", null, "Position: ", this.state.x + ', ' + this.state.y), React.createElement("label", { htmlFor: "delay" }, "Delay "), React.createElement("input", { type: "number", name: "delay", onChange: this.handleChange, value: this.state.delay }));
+            return React.createElement("div", { id: "scoreboard" }, React.createElement("h1", null, "Stats"), React.createElement("p", null, "Movement: ", this.state.movement, " time(s)"), React.createElement("p", null, "Direction: ", directions[this.state.direction]), React.createElement("p", null, "Position: ", this.state.x + ', ' + this.state.y), React.createElement("p", null, "Out of border: ", this.state.out + ''), React.createElement("label", { htmlFor: "delay" }, "Delay "), React.createElement("input", { type: "number", step: "50", min: "1", name: "delay", onChange: this.handleChange, value: this.state.delay }));
         }
     });
 
